@@ -6,9 +6,9 @@ signal bookmark_selected(index: int)
 signal paused_changed(paused: bool)
 
 const BOOKMARKS := ["Main Gate", "Ichiraku", "Hokage residence", "Arena", "Academy", "Overlook"]
-const INK := Color(0.91, 0.93, 0.87)
-const MUTED := Color(0.65, 0.70, 0.65)
-const ACCENT := Color(0.58, 0.73, 0.55)
+const INK := Color("2c3029")
+const MUTED := Color("77796e")
+const ACCENT := Color("a44533")
 
 var player: CharacterBody3D
 var paused := true
@@ -119,7 +119,7 @@ func _style(background: Color, border: Color = Color.TRANSPARENT) -> StyleBoxFla
 	style.bg_color = background
 	style.border_color = border
 	style.set_border_width_all(1 if border.a > 0.0 else 0)
-	style.set_corner_radius_all(5)
+	style.set_corner_radius_all(0)
 	style.content_margin_left = 14.0
 	style.content_margin_right = 14.0
 	style.content_margin_top = 9.0
@@ -138,10 +138,11 @@ func _button(body: String) -> Button:
 	button.text = body
 	button.custom_minimum_size.y = 39
 	button.add_theme_font_size_override("font_size", 16)
-	button.add_theme_color_override("font_color", INK)
-	button.add_theme_stylebox_override("normal", _style(Color(0.115, 0.15, 0.13), Color(0.22, 0.28, 0.24)))
-	button.add_theme_stylebox_override("hover", _style(Color(0.19, 0.25, 0.19), ACCENT.darkened(0.25)))
-	button.add_theme_stylebox_override("pressed", _style(Color(0.24, 0.31, 0.23), ACCENT))
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		button.add_theme_color_override(state, INK)
+	button.add_theme_stylebox_override("normal", _style(Color("e9e6dc"), Color("d6d3c7")))
+	button.add_theme_stylebox_override("hover", _style(Color("dedace"), ACCENT))
+	button.add_theme_stylebox_override("pressed", _style(Color("d4ccbb"), ACCENT))
 	button.add_theme_stylebox_override("focus", _style(Color(0,0,0,0), ACCENT))
 	return button
 
@@ -170,7 +171,7 @@ func _build() -> void:
 	brand.add_theme_constant_override("shadow_offset_x", 1)
 	brand.add_theme_constant_override("shadow_offset_y", 1)
 	location_box.add_child(brand)
-	_location = _label("Main Gate", 23)
+	_location = _label("Main Gate", 23, Color("f3f0e6"))
 	_location.add_theme_color_override("font_shadow_color", Color(0,0,0,.9))
 	_location.add_theme_constant_override("shadow_offset_x", 1)
 	_location.add_theme_constant_override("shadow_offset_y", 2)
@@ -202,46 +203,67 @@ func _build() -> void:
 	root.add_child(_overlay)
 	var shade := ColorRect.new()
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	shade.color = Color(0.015, 0.026, 0.024, 0.72)
+	shade.color = Color(0.015, 0.026, 0.024, 0.20)
 	_overlay.add_child(shade)
-	var center := CenterContainer.new()
+	var center := MarginContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.add_theme_constant_override("margin_left", 36)
+	center.add_theme_constant_override("margin_top", 30)
+	center.add_theme_constant_override("margin_bottom", 30)
+	center.add_theme_constant_override("margin_right", 36)
 	_overlay.add_child(center)
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size.x = 466
-	panel.add_theme_stylebox_override("panel", _style(Color(0.050,0.073,0.061,.98), Color(.22,.28,.23)))
+	panel.custom_minimum_size.x = 390
+	panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	panel.add_theme_stylebox_override("panel", _style(Color("f3f0e6"), Color("c7c3b7")))
 	center.add_child(panel)
 	var margin := MarginContainer.new()
 	for side: String in ["left","right","top","bottom"]:
 		margin.add_theme_constant_override("margin_"+side, 20)
 	panel.add_child(margin)
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 13)
+	column.add_theme_constant_override("separation", 10)
 	margin.add_child(column)
-	_title = _label("KONOHA", 31)
+	_title = _label("KONOHA", 33)
 	column.add_child(_title)
-	column.add_child(_label("Hidden Leaf Village", 16, MUTED))
+	column.add_child(_label("Hidden Leaf Village", 14, MUTED))
 	_resume = _button("Explore village")
 	_resume.custom_minimum_size.y = 47
+	for state in ["normal", "hover", "pressed"]:
+		_resume.add_theme_stylebox_override(state, _style(ACCENT.darkened(.15) if state == "hover" else ACCENT))
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		_resume.add_theme_color_override(state, Color("f3f0e6"))
 	_resume.add_theme_font_size_override("font_size", 18)
 	_resume.pressed.connect(func(): set_paused(false))
 	column.add_child(_resume)
 	column.add_child(HSeparator.new())
-	column.add_child(_label("LANDMARKS", 13, MUTED))
+	column.add_child(_label("DESTINATIONS", 11, MUTED))
 	var grid := GridContainer.new()
-	grid.columns = 2
+	grid.columns = 1
 	grid.add_theme_constant_override("h_separation", 8)
 	grid.add_theme_constant_override("v_separation", 8)
 	column.add_child(grid)
 	for i in range(BOOKMARKS.size()):
-		var button := _button(BOOKMARKS[i])
+		var button := _button("%02d   %s" % [i + 1, BOOKMARKS[i]])
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.custom_minimum_size.y = 34
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_visit_bookmark.bind(i))
 		grid.add_child(button)
 	column.add_child(HSeparator.new())
+	var settings_toggle := _button("Settings  +")
+	column.add_child(settings_toggle)
+	var settings := VBoxContainer.new()
+	settings.add_theme_constant_override("separation", 9)
+	settings.visible = false
+	column.add_child(settings)
+	settings_toggle.pressed.connect(func():
+		settings.visible = not settings.visible
+		settings_toggle.text = "Settings  −" if settings.visible else "Settings  +")
 	var look_row := HBoxContainer.new()
 	look_row.add_theme_constant_override("separation", 10)
-	column.add_child(look_row)
+	settings.add_child(look_row)
 	var look_label := _label("Look sensitivity", 16)
 	look_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	look_row.add_child(look_label)
@@ -255,10 +277,10 @@ func _build() -> void:
 	_sensitivity_slider.value = _sensitivity_multiplier
 	_sensitivity_slider.custom_minimum_size.y = 20
 	_sensitivity_slider.value_changed.connect(_set_sensitivity)
-	column.add_child(_sensitivity_slider)
+	settings.add_child(_sensitivity_slider)
 	var graphics_row := HBoxContainer.new()
 	graphics_row.add_theme_constant_override("separation", 16)
-	column.add_child(graphics_row)
+	settings.add_child(graphics_row)
 	var graphics_label := _label("Graphics", 16)
 	graphics_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	graphics_row.add_child(graphics_label)
@@ -266,6 +288,10 @@ func _build() -> void:
 	_graphics_selector.name = "GraphicsQuality"
 	_graphics_selector.custom_minimum_size = Vector2(190,36)
 	_graphics_selector.add_theme_font_size_override("font_size",16)
+	for state in ["normal", "hover", "pressed"]:
+		_graphics_selector.add_theme_stylebox_override(state, _style(Color("e1ddd1")))
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		_graphics_selector.add_theme_color_override(state, INK)
 	for item in ["Balanced", "High", "Performance"]:
 		_graphics_selector.add_item(item)
 	_graphics_selector.select(quality_index)
@@ -275,12 +301,14 @@ func _build() -> void:
 	_fullscreen_toggle.name = "Fullscreen"
 	_fullscreen_toggle.text = "Fullscreen"
 	_fullscreen_toggle.add_theme_font_size_override("font_size",16)
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		_fullscreen_toggle.add_theme_color_override(state, INK)
 	_fullscreen_toggle.button_pressed = _fullscreen_enabled
 	_fullscreen_toggle.toggled.connect(_set_fullscreen)
-	column.add_child(_fullscreen_toggle)
+	settings.add_child(_fullscreen_toggle)
 	var footer := HBoxContainer.new()
 	column.add_child(footer)
-	var hint := _label("Esc to pause or return", 15, MUTED)
+	var hint := _label("Esc   Return", 13, MUTED)
 	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	footer.add_child(hint)
@@ -315,6 +343,7 @@ func set_paused(value: bool) -> void:
 	if is_instance_valid(player):
 		player.set_paused(value)
 	_overlay.visible = value
+	_location.get_parent().visible = not value
 	_reticle.visible = not value
 	_help.visible = not value
 	if not value:
