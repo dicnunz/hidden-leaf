@@ -1,0 +1,48 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  controller:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Python syntax
+        run: python -m compileall -q tools
+      - name: Install Godot 4.7.1
+        env:
+          BASE_URL: https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable
+        run: |
+          curl --fail --location --retry 3 "$BASE_URL/Godot_v4.7.1-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          curl --fail --location --retry 3 "$BASE_URL/SHA512-SUMS.txt" -o "$RUNNER_TEMP/godot-checksums.txt"
+          python - <<'PYCODE'
+          import hashlib, os, pathlib, zipfile
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          filename = 'Godot_v4.7.1-stable_linux.x86_64.zip'
+          expected = next(line.split()[0] for line in (root/'godot-checksums.txt').read_text().splitlines() if line.split()[-1].lstrip('*') == filename)
+          with (root/'godot.zip').open('rb') as file:
+              assert hashlib.file_digest(file, 'sha512').hexdigest() == expected
+          with zipfile.ZipFile(root/'godot.zip') as archive:
+              archive.extractall(root/'godot')
+          binary = root/'godot'/filename.removesuffix('.zip')
+          binary.chmod(0o755)
+          PYCODE
+      - name: Run controller checks
+        run: |
+          set -o pipefail
+          "$RUNNER_TEMP/godot/Godot_v4.7.1-stable_linux.x86_64" --headless --path . --script res://qa/test_player.gd -- --qa | tee "$RUNNER_TEMP/controller.log"
+          python - <<'PYCODE'
+          import os, pathlib, re
+          log = (pathlib.Path(os.environ['RUNNER_TEMP'])/'controller.log').read_text()
+          assert re.search(r'PLAYER_QA_RESULT checks=39 failures=0', log), log
+          PYCODE
