@@ -6,6 +6,8 @@ An explorable Hidden Leaf Village scene built with Godot and Blender. Walk throu
 
 ![Village landmark menu](docs/menu.png)
 
+[Browse native screenshots and controls](https://dicnunz.github.io/demos/hidden-leaf/)
+
 ## Run
 
 The Mac download includes the engine and assets and runs offline. It is ad hoc signed, without Apple notarization.
