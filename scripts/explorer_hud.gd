@@ -6,9 +6,9 @@ signal bookmark_selected(index: int)
 signal paused_changed(paused: bool)
 
 const BOOKMARKS := ["Main Gate", "Ichiraku", "Hokage residence", "Arena", "Academy", "Overlook"]
-const INK := Color("2c3029")
-const MUTED := Color("77796e")
-const ACCENT := Color("a44533")
+const INK := Color("f3f5f7")
+const MUTED := Color("b2bbc5")
+const ACCENT := Color("3476ae")
 
 var player: CharacterBody3D
 var paused := true
@@ -29,7 +29,7 @@ var _sensitivity_multiplier := 1.0
 var _fullscreen_enabled := false
 var _sensitivity_slider: HSlider
 var _graphics_selector: OptionButton
-var _fullscreen_toggle: CheckBox
+var _fullscreen_toggle: CheckButton
 
 func _ready() -> void:
 	layer = 10
@@ -119,7 +119,7 @@ func _style(background: Color, border: Color = Color.TRANSPARENT) -> StyleBoxFla
 	style.bg_color = background
 	style.border_color = border
 	style.set_border_width_all(1 if border.a > 0.0 else 0)
-	style.set_corner_radius_all(0)
+	style.set_corner_radius_all(8)
 	style.content_margin_left = 14.0
 	style.content_margin_right = 14.0
 	style.content_margin_top = 9.0
@@ -140,9 +140,9 @@ func _button(body: String) -> Button:
 	button.add_theme_font_size_override("font_size", 16)
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
 		button.add_theme_color_override(state, INK)
-	button.add_theme_stylebox_override("normal", _style(Color("e9e6dc"), Color("d6d3c7")))
-	button.add_theme_stylebox_override("hover", _style(Color("dedace"), ACCENT))
-	button.add_theme_stylebox_override("pressed", _style(Color("d4ccbb"), ACCENT))
+	button.add_theme_stylebox_override("normal", _style(Color("303a45"), Color("46515f")))
+	button.add_theme_stylebox_override("hover", _style(Color("414f5f"), ACCENT))
+	button.add_theme_stylebox_override("pressed", _style(Color("24313e"), ACCENT))
 	button.add_theme_stylebox_override("focus", _style(Color(0,0,0,0), ACCENT))
 	return button
 
@@ -152,6 +152,10 @@ func _build() -> void:
 	_load_preferences()
 	_built = true
 	var root := Control.new()
+	var interface_font := SystemFont.new()
+	interface_font.font_names = PackedStringArray(["Helvetica Neue", "Arial"])
+	root.theme = Theme.new()
+	root.theme.default_font = interface_font
 	root.name = "ExplorerInterface"
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -166,12 +170,12 @@ func _build() -> void:
 	location_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	location_box.add_theme_constant_override("separation", 3)
 	root.add_child(location_box)
-	var brand := _label("K O N O H A", 14, Color(0.83, 0.88, 0.80, 0.9))
+	var brand := _label("Hidden Leaf", 14, Color(0.83, 0.88, 0.80, 0.9))
 	brand.add_theme_color_override("font_shadow_color", Color(0,0,0,.8))
 	brand.add_theme_constant_override("shadow_offset_x", 1)
 	brand.add_theme_constant_override("shadow_offset_y", 1)
 	location_box.add_child(brand)
-	_location = _label("Main Gate", 23, Color("f3f0e6"))
+	_location = _label("Main Gate", 23, Color("f3f5f7"))
 	_location.add_theme_color_override("font_shadow_color", Color(0,0,0,.9))
 	_location.add_theme_constant_override("shadow_offset_x", 1)
 	_location.add_theme_constant_override("shadow_offset_y", 2)
@@ -203,7 +207,7 @@ func _build() -> void:
 	root.add_child(_overlay)
 	var shade := ColorRect.new()
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	shade.color = Color(0.015, 0.026, 0.024, 0.20)
+	shade.color = Color(0.01, 0.018, 0.028, 0.28)
 	_overlay.add_child(shade)
 	var center := MarginContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -213,46 +217,46 @@ func _build() -> void:
 	center.add_theme_constant_override("margin_right", 36)
 	_overlay.add_child(center)
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size.x = 390
+	panel.custom_minimum_size.x = 470
 	panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	panel.add_theme_stylebox_override("panel", _style(Color("f3f0e6"), Color("c7c3b7")))
+	panel.add_theme_stylebox_override("panel", _style(Color(0.10, 0.135, 0.18, 0.96), Color("4a5664")))
 	center.add_child(panel)
 	var margin := MarginContainer.new()
 	for side: String in ["left","right","top","bottom"]:
-		margin.add_theme_constant_override("margin_"+side, 20)
+		margin.add_theme_constant_override("margin_"+side, 24)
 	panel.add_child(margin)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 10)
 	margin.add_child(column)
-	_title = _label("KONOHA", 33)
+	_title = _label("Hidden Leaf", 32)
 	column.add_child(_title)
-	column.add_child(_label("Hidden Leaf Village", 14, MUTED))
+	column.add_child(_label("Village explorer", 15, MUTED))
 	_resume = _button("Explore village")
 	_resume.custom_minimum_size.y = 47
 	for state in ["normal", "hover", "pressed"]:
 		_resume.add_theme_stylebox_override(state, _style(ACCENT.darkened(.15) if state == "hover" else ACCENT))
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-		_resume.add_theme_color_override(state, Color("f3f0e6"))
+		_resume.add_theme_color_override(state, Color("f3f5f7"))
 	_resume.add_theme_font_size_override("font_size", 18)
 	_resume.pressed.connect(func(): set_paused(false))
 	column.add_child(_resume)
 	column.add_child(HSeparator.new())
-	column.add_child(_label("DESTINATIONS", 11, MUTED))
+	column.add_child(_label("Landmarks", 15, MUTED))
 	var grid := GridContainer.new()
-	grid.columns = 1
+	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", 8)
 	grid.add_theme_constant_override("v_separation", 8)
 	column.add_child(grid)
 	for i in range(BOOKMARKS.size()):
-		var button := _button("%02d   %s" % [i + 1, BOOKMARKS[i]])
+		var button := _button(BOOKMARKS[i])
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.y = 34
+		button.custom_minimum_size.y = 48
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_visit_bookmark.bind(i))
 		grid.add_child(button)
 	column.add_child(HSeparator.new())
-	var settings_toggle := _button("Settings  +")
+	var settings_toggle := _button("Settings")
 	column.add_child(settings_toggle)
 	var settings := VBoxContainer.new()
 	settings.add_theme_constant_override("separation", 9)
@@ -260,7 +264,7 @@ func _build() -> void:
 	column.add_child(settings)
 	settings_toggle.pressed.connect(func():
 		settings.visible = not settings.visible
-		settings_toggle.text = "Settings  −" if settings.visible else "Settings  +")
+		settings_toggle.text = "Hide settings" if settings.visible else "Settings")
 	var look_row := HBoxContainer.new()
 	look_row.add_theme_constant_override("separation", 10)
 	settings.add_child(look_row)
@@ -289,7 +293,7 @@ func _build() -> void:
 	_graphics_selector.custom_minimum_size = Vector2(190,36)
 	_graphics_selector.add_theme_font_size_override("font_size",16)
 	for state in ["normal", "hover", "pressed"]:
-		_graphics_selector.add_theme_stylebox_override(state, _style(Color("e1ddd1")))
+		_graphics_selector.add_theme_stylebox_override(state, _style(Color("303a45")))
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
 		_graphics_selector.add_theme_color_override(state, INK)
 	for item in ["Balanced", "High", "Performance"]:
@@ -297,7 +301,7 @@ func _build() -> void:
 	_graphics_selector.select(quality_index)
 	_graphics_selector.item_selected.connect(_set_quality)
 	graphics_row.add_child(_graphics_selector)
-	_fullscreen_toggle = CheckBox.new()
+	_fullscreen_toggle = CheckButton.new()
 	_fullscreen_toggle.name = "Fullscreen"
 	_fullscreen_toggle.text = "Fullscreen"
 	_fullscreen_toggle.add_theme_font_size_override("font_size",16)
@@ -350,7 +354,7 @@ func set_paused(value: bool) -> void:
 		_has_started = true
 		get_viewport().gui_release_focus()
 	else:
-		_title.text = "Paused" if _has_started else "KONOHA"
+		_title.text = "Hidden Leaf"
 		_resume.text = "Resume" if _has_started else "Explore village"
 		_resume.grab_focus()
 	paused_changed.emit(value)

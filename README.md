@@ -2,7 +2,7 @@
 
 An explorable Hidden Leaf Village scene built with Godot and Blender. Walk through the village, enter Ichiraku, or jump between six landmarks.
 
-[Download for Apple Silicon Mac](https://github.com/dicnunz/hidden-leaf/releases/latest)
+[Download for Apple Silicon Mac](https://github.com/dicnunz/hidden-leaf/releases/tag/v0.3.0)
 
 ![Village landmark menu](docs/menu.png)
 
@@ -26,7 +26,7 @@ The asset download contains the generated scene, vegetation and material maps. I
 
 The menu includes landmark shortcuts, fullscreen, mouse sensitivity and three graphics settings. The build has been tested on an Apple M3 using Metal and Forward+ rendering.
 
-The menu uses a quiet landmark register with ink, ivory and vermilion, informed by [Japanese shrine plaques and signs](https://www.mlit.go.jp/tagengo-db/en/H30-00534.html). Settings open on demand, keeping the village visible.
+The menu groups landmarks in two columns. Settings open on demand; graphics, fullscreen and look sensitivity are saved locally.
 
 ## Implementation
 

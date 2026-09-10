@@ -21,7 +21,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT / ".build"
-APP_NAME = "Hidden Leaf Explorer"
+APP_NAME = "Hidden Leaf"
 EXECUTABLE = "HiddenLeafExplorer"
 BUNDLE_ID = "local.hiddenleaf.explorer"
 DEFAULT_DEST = WORK / "dist" / f"{APP_NAME}.app"
@@ -112,7 +112,7 @@ def credits_from_manifest(path: Path) -> tuple[str, dict[str, str]]:
             assets[str(name)] = str(source)
     assets.update(EXTRA_ASSETS)
     lines = [
-        "# Hidden Leaf Explorer", "",
+        "# Hidden Leaf", "",
         "Setting inspired by Naruto Shippuden, created by Masashi Kishimoto.",
         "Village geometry and explorer implementation were created for this local project.", "",
         "Architecture was modeled using frames from Naruto and Naruto Shippuden. The source pages are "

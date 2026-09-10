@@ -34,7 +34,7 @@ var qa_out := ""
 var trees: Array = []
 
 func _ready() -> void:
-	DisplayServer.window_set_title("Hidden Leaf Explorer")
+	DisplayServer.window_set_title("Hidden Leaf")
 	qa = "--qa" in OS.get_cmdline_user_args()
 	bench = qa and "--benchmark" in OS.get_cmdline_user_args()
 	for arg: String in OS.get_cmdline_user_args():

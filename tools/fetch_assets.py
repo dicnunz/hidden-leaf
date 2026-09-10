@@ -49,6 +49,9 @@ def main():
         for name in ('village_v3.glb', 'village_v3.json'):
             if not (unpack / 'assets' / name).is_file():
                 raise ValueError(f'Archive missing {name}')
+        # The scene uses the adjacent PNG; this unused EXR uses compression
+        # unsupported by Godot's importer. Preserve the verified archive, omit the duplicate.
+        (unpack / 'assets/vegetation/textures/tree_small_02_nor_gl_1k.exr').unlink(missing_ok=True)
         (unpack / 'assets').rename(destination)
     print('Verified assets installed at', destination)
 
