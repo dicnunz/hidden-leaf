@@ -8,6 +8,7 @@ import os
 import hashlib
 from pathlib import Path
 import bpy
+import bmesh
 from collections import defaultdict
 from common import Builder, material, MATS, text
 from districts import Frame
@@ -59,6 +60,16 @@ def house(b,x,y,r,floors,rng,rich=True,family=0,occluders=None):
         # Shallow stepped dome rises inside the terrace parapet.
         dome=[(height,roof_r*.70),(height+.35,roof_r*.65),(height+.80,roof_r*.48),(height+1.1,.10)]
         profiled_shell(f,dome,0,mat,bays=40 if rich else 20,detailed=False)
+    # Wind deposited apron fades into the ground; leave the door approach bare.
+    if rich:
+        skirt=[]
+        for i in range(49):
+            a=.25+(math.tau-.50)*i/48
+            drift=.20+.28*(.5+.5*math.sin(a*3+x*.37))
+            rr=radius_at(profile,.1)
+            skirt.extend([(rr*math.sin(a),-rr*math.cos(a),.16+drift*.25),
+                ((rr+drift)*math.sin(a),-(rr+drift)*math.cos(a),-.075)])
+        f.mesh(skirt,[(2*i,2*i+1,2*i+3,2*i+2) for i in range(48)],'sand_ground')
     if not rich:
         # Distant window cuts use four vertices apiece, batched with each cell.
         for story in range(floors):
@@ -243,29 +254,30 @@ def office(roles,occluders):
 
 def enclosure(roles):
     rng=random.Random(SEED+1)
-    count=288
+    count=576
     # Alternating resistant ledges and recessed beds; each has its own thickness.
     heights=[0,.07,.15,.21,.235,.32,.39,.415,.49,.57,.595,.69,.76,.79,.88,.94,1.]
     shelves=[0,-1,1.1,1.9,-.6,.4,2.2,-1.2,.6,2.3,-.8,.9,2.8,-.4,1.5,2.1,1.]
     def point(i,j):
         a=-math.pi/2+.055+(math.tau-.11)*i/count
         t=heights[j]
+        a+=math.sin(a*19+t*7)*.0025*math.sin(math.pi*t)
         # Erosion runs vertically through beds, while joint spacing varies around basin.
-        gully=(.5+.5*math.sin(a*43+math.sin(a*13)))**6
+        gully=(.5+.5*math.sin(a*43+math.sin(a*13)+t*1.7))**6
         joint=math.sin(a*89+j*.62)*.62+math.sin(a*131-j*.41)*.36
-        buttress=3.8*math.sin(a*17+1.4)+1.8*math.sin(a*31)
-        radius=245+buttress+t*16+shelves[j]*(.65+.35*math.sin(a*8+1))+gully*4.5+joint
-        elevation=t*(66+7*math.sin(a*5)+4*math.sin(a*11))
+        buttress=9.0*math.sin(a*7+1.4)+5.8*math.sin(a*17)+2.8*math.sin(a*31)
+        radius=245+buttress+t*16+shelves[j]*(.35+.65*math.sin(a*8+1))*math.sin(a*3+t*4)+gully*9.5+joint
+        elevation=t*(91+17*math.sin(a*5)+10*math.sin(a*11)+5*math.sin(a*23))
         if j not in (0,len(heights)-1):elevation+=math.sin(a*23+j*.4)*.62+math.sin(a*59)*.34
         return (radius*math.cos(a),radius*math.sin(a),elevation-.13)
-    for start in range(0,count,24):
+    for start in range(0,count,count):
         b=Builder('Sand eroded escarpment %03d'%start)
-        for i in range(start,min(count,start+24)):
+        for i in range(start,min(count,start+count)):
             for j in range(len(heights)-1):
                 p=[point(i,j),point(i+1,j),point(i+1,j+1),point(i,j+1)]
                 # Triangulated angular beds carry real ledge and gully silhouettes.
                 faces=[(0,3,2),(0,2,1)] if (i+j)%2 else [(0,3,1),(1,3,2)]
-                mat='sand_strata' if j in (3,6,9,12) and (i//3)%7==0 else 'sand_rock'
+                mat='sand_rock'
                 b.mesh(p,faces,mat)
             a,c=point(i,len(heights)-1),point(i+1,len(heights)-1)
             b.mesh([a,c,(c[0]*1.38,c[1]*1.38,c[2]+2.4),(a[0]*1.38,a[1]*1.38,a[2]+2.4)],[(3,2,1,0)],'sand_rock')
@@ -275,13 +287,17 @@ def enclosure(roles):
             uppa=point(i,1);uppc=point(i+1,1)
             b.mesh([basea,basec,uppc,uppa],[(0,3,2),(0,2,1)],'sand_rock')
         for _ in range(25):
-            i=rng.uniform(start,min(count-.001,start+24))
+            i=rng.uniform(start,min(count-.001,start+count))
             a=-math.pi/2+.055+(math.tau-.11)*i/count
             rr=rng.uniform(229,240);size=rng.uniform(.28,1.25)
             b.sphere((rr*math.cos(a),rr*math.sin(a),size*.29),(size,size*.73,size*.58),'sand_rock',n=7,rings=4)
         objects=finish(b,roles,True,1500)
         for ob in objects:
-            for face in ob.data.polygons:face.use_smooth=False
+            bm=bmesh.new();bm.from_mesh(ob.data)
+            bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=.001)
+            bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+            bm.to_mesh(ob.data);bm.free()
+            for face in ob.data.polygons:face.use_smooth=True
 
 
 def build(slice_only=False):
@@ -289,23 +305,37 @@ def build(slice_only=False):
     ground=Builder('Sand ground');ground.box((0,0,-.20),(900,900,.4),'sand_ground')
     for ob in finish(ground,roles,True,1800):roles[ob.name]['occlusion_culling']=False
     font_record=office(roles,occluders)
-    # Seven rows leave a 13m ceremonial avenue and walkable 2m+ side lanes.
+    # Staggered frontage clusters tighten the avenue to 8-12m, opening into
+    # the official plaza. Metric entrances stay unchanged; layouts are inferred.
     count=0;frontages=[]
-    for row,y in enumerate((-59,-44,-29,-14,1,16,31)):
-        for column,x in enumerate((-47,-32,-17,17,32,47)):
-            if y>15 and abs(x)<25:continue
-            r=rng.uniform(4.6,5.7);floors=rng.choice([2,3,3,4])
+    for row,y in enumerate((-60,-43,-27,-10,7,25,41)):
+        for column,x in enumerate((-43,-27,-11,11,27,43)):
+            if y>15 and abs(x)<20:continue
+            r=rng.uniform(4.2,5.9)
+            floors=rng.choice([2,2,3,4,5])
             b=Builder('Sand district %02d'%count)
-            hx=x+rng.uniform(-.5,.5)
-            house(b,hx,y,r,floors,rng,True,(row+column)%3,occluders)
-            frontages.append((row,hx,y,r))
+            hx=x+rng.uniform(-1.3,1.3)
+            # Reserve x [-20.5,-17.5] through the residential district, including
+            # maximum bulge, trims and drift skirts. Annexes face away from it.
+            if x==-27:hx=min(hx,-20.5-1.12*r-.65)
+            if x==-11:hx=max(hx,-17.5+1.12*r+.65)
+            hy=y+rng.uniform(-2.0,2.0)+(2.5 if column%2 else 0.)
+            house(b,hx,hy,r,floors,rng,True,rng.randrange(3),occluders)
+            frontages.append((row,hx,hy,r))
+            # Low attached rear rooms form inhabited compounds, breaking the
+            # isolated tower rhythm without changing the tower or its doorway.
+            if row%2==column%2:
+                annex=Frame(b,hx+(-1 if x==-27 else 1)*r*.58,hy+r*.42,.1)
+                ah=2.8+rng.random()*.8
+                annex.box((0,0,ah/2),(r*1.35,r*1.15,ah),'sand_stucco')
+                annex.box((0,0,ah),(r*1.40,r*1.20,.18),'sand_pale')
             finish(b,roles,True,650);count+=1
     # Shared masonry courts join selected neighbors; 1.2m portals retain passage.
     links=Builder('Sand shared service courts')
     for row in (0,2,4,6):
         houses=sorted([p for p in frontages if p[0]==row],key=lambda p:p[1])
         for aa,bb in zip(houses,houses[1:]):
-            if aa[1]*bb[1]<0:continue
+            if aa[1]*bb[1]<0 or aa[1]<-19<bb[1]:continue
             left=aa[1]+aa[3]*.87;right=bb[1]-bb[3]*.87
             span=right-left
             if span<1.6:continue
@@ -319,7 +349,7 @@ def build(slice_only=False):
     finish(links,roles,True,400)
     # Public courtyard and route furniture are practical masonry, not vegetation.
     court=Builder('Sand courtyard');f=Frame(court,0,-23,0)
-    for x in (-7.2,7.2):
+    for x in (-4.2,4.2):
         f.box((x,0,.29),(.65,8,.58),'sand_pale')
         for y in (-3.5,3.5):f.cyl((x,y,.95),.18,1.9,'sand_trim',n=16)
     # Small covered well on a lateral court, maintaining central road clearance.
@@ -342,7 +372,7 @@ def build(slice_only=False):
             if math.hypot(x,y)>225 or (abs(x)<64 and -75<y<80) or abs(x)<9:continue
             key=(x//64,y//64)
             if key not in cells:cells[key]=Builder('Sand skyline %d %d'%key)
-            hx=x+rng.uniform(-1.5,1.5);hy=y+rng.uniform(-1.5,1.5)
+            hx=x+rng.uniform(-2.5,2.5)+(3.5 if (y//step)%2 else -1.5);hy=y+rng.uniform(-2.4,2.4)
             radius=rng.uniform(4.4,6.6);floors=rng.choice([2,3,4,5]);height=floors*3.15+.94
             house(cells[key],hx,hy,radius,floors,rng,False,macro%3,occluders)
             colliders.append({'shape':'cylinder','position':godot((hx,hy,height/2+.10)),'radius':radius,'height':height})
@@ -356,5 +386,5 @@ def build(slice_only=False):
         'occluders':occluders,'baked_font':font_record,
         'bookmarks':[{'name':'Sand avenue','position':godot((0,-72,.12)),'target':godot((0,46,12))},
             {'name':'Kazekage plaza','position':godot((0,15,.12)),'target':godot((0,46,12))},
-            {'name':'Clay district','position':godot((-9,-42,.12)),'target':godot((-30,-29,8))},
+            {'name':'Clay district','position':godot((-19,-42,.12)),'target':godot((-30,-29,8))},
             {'name':'Enclosure','position':godot((0,-213,.12)),'target':godot((0,0,20))}]}

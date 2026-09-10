@@ -29,11 +29,18 @@ void fragment() {
     float luminance=dot(scan,vec3(0.2126,0.7152,0.0722));
     float stain=noise(world_position.xz*0.12+vec2(world_position.y*0.035));
     float foot=1.0-smoothstep(0.0,1.4,world_position.y);
-    float patches=smoothstep(0.34,0.65,noise(world_position.xz*0.38+vec2(world_position.y*0.21)));
+    // Metre-scale coherent weather fronts and vertical runoff break scan tiling.
+    vec2 wall=world_position.xz+vec2(world_position.y*0.43,world_position.y*0.71);
+    float broad=noise(wall*0.075);
+    float medium=noise(wall*0.31+vec2(19.3,7.1));
+    float grain=noise(wall*1.13);
+    float patches=smoothstep(0.36,0.67,broad*0.56+medium*0.32+grain*0.12);
+    float runoff=noise(world_position.xz*1.4+vec2(world_position.y*0.025));
+    float weather=1.0-patch_wear*(0.13*broad+0.055*runoff);
     float wear_mix=scan_weight*mix(1.0,0.05+0.95*patches,patch_wear);
     vec3 surface=mix(vec3(luminance),scan,mineral);
-    ALBEDO=pigment.rgb*mix(vec3(1.0),clamp(surface*2.8,vec3(0.32),vec3(1.7)),wear_mix)*(0.99-0.11*stain-0.10*foot);
+    ALBEDO=pigment.rgb*mix(vec3(1.0),clamp(surface*2.8,vec3(0.32),vec3(1.7)),wear_mix)*(0.99-0.11*stain-0.10*foot)*weather;
     ROUGHNESS=clamp(mix(roughness,texture(surface_roughness,p).r,0.55)-moisture*foot*0.2,0.15,1.0);
     NORMAL_MAP=texture(surface_normal,p).rgb;
-    NORMAL_MAP_DEPTH=relief*mix(1.0,0.15+0.85*patches,patch_wear);
+    NORMAL_MAP_DEPTH=relief*mix(1.0,0.04+0.24*patches,patch_wear);
 }

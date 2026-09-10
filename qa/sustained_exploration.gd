@@ -8,7 +8,7 @@ const VILLAGE_ROUTES := {
 	"sand": [
 		{"name":"Sand avenue", "start":Vector3(0,.24,72), "end":Vector3(0,.24,42)},
 		{"name":"Kazekage approach", "start":Vector3(0,.24,-15), "end":Vector3(0,.24,15)},
-		{"name":"Clay district", "start":Vector3(-9,.24,42), "end":Vector3(-9,.24,12)}
+		{"name":"Clay district", "start":Vector3(-19,.24,42), "end":Vector3(-19,.24,12)}
 	]
 }
 
@@ -37,8 +37,10 @@ func _run() -> void:
 			failures.append(village_id + ": no validated traversal route")
 			continue
 		var load_started := Time.get_ticks_usec()
-		# Initial startup already requests Leaf. Subsequent requests use the same
-		# application handler as its menu and retain all failure checks.
+		# Startup requests Leaf even when the diagnostic begins with another village.
+		# Finish that request before dispatching through the ordinary menu handler.
+		while world.session.is_loading() and Time.get_ticks_usec()-load_started < 60000000:
+			await process_frame
 		if not world.session.is_loading() and world.current_id != village_id:
 			world._request_village(village_id)
 		while world.session.is_loading() and Time.get_ticks_usec()-load_started < 60000000:

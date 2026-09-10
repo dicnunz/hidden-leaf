@@ -8,7 +8,7 @@ The current branch contains a generated Sand environment and a separate applicat
 
 - Sand has repeated building arrangements, insufficient street detail and weak canyon geology. Its visible surfaces and terrain transitions do not meet the required physical realism.
 - The office silhouette was corrected against an inspected reference image, but that secondary reproduction's original episode remains unidentified. Its inferred metric dimensions and connective layout are not canonically exact.
-- Leaf's original sustained M3 measurements fail the frame-time target. Optimized foliage and authored texture coordinates require full-world performance validation.
+- Leaf's prepared scene still fails the sustained gate-route target. Subsequent measured interventions did not resolve it.
 - Three villages, environmental audio, all-five sustained traversal, final art/engineering acceptance, a reproducible final package and a trailer captured from approved shipping environments remain outstanding.
 
 The evidence classifications in this directory record confidence in individual claims. They do not certify the generated world as accurate or finished.
@@ -79,3 +79,34 @@ godot --path . --resolution 1600x900 --script qa/sustained_exploration.gd -- --q
 ```
 
 Raw measurements and captured views are written under `.build/`. Short diagnostic runs are explicitly ineligible for sustained acceptance.
+
+## Active feasibility intervention
+
+The follow-up intervention changed implementation and measured each candidate. Both approval gates remain unmet. The Leaf source experiments were removed after measurement; source and prepared geometry retain the previous tree placements, LODs, shadows and quality settings.
+
+Fresh stationary diagnostics used the actual application at native 1600×900, its gate camera at (0, 0.24, 380), three seconds of warmup and 240 measured frames. These comparisons identify intervention effects; they are not sustained acceptance.
+
+| Leaf candidate | Mean | p95 | Draw calls | Primitives | Disposition |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Control, 24 m tree cells | 22.43 ms | 23.58 ms | 4,355 | 8.89 M | Gate fails |
+| 64 m tree cells | 24.15 ms | 25.24 ms | 3,004 | 11.98 M | Removed; coarse LOD selection promotes excess geometry |
+| 64 m cells with per-tree runtime LOD selection | 24.00 ms | 24.08 ms | 5,548 | 11.96 M | Removed; mixed LOD batches and larger culling bounds remain expensive |
+| Canopy alpha depth prepass | 22.34 ms | 23.29 ms | 4,358 | 8.89 M | Removed; no material benefit |
+
+Diagnostic isolation measured 12.31 ms with the forest hidden, 20.66 ms with shadows disabled, and 19.79 ms with SSAO disabled. Those controls were restored and are not proposed shipping settings.
+
+Sand received two generated and rendered passes. The first narrowed and staggered residential frontages, varied height, added attached rooms and varied weathering. It exposed a blocked old Clay bookmark and retained striped cliff faces. The second reserved a connected 3 m residential lane centered at x = -19 m, moved that bookmark into the lane, added doorway-separated sand accumulation skirts, welded the cliff into a continuous surface and removed its rigid material bands. Office geometry and metric entrances were retained. Lane tests follow the revised physical street.
+
+The latest screenshot above is from the rebuilt runtime. Street enclosure and continuity improved, but repeated facade details, pebbled plaster, elementary geological form and insufficient environmental detail still fail the professional visual gate. No strategy is approved for scaling to the remaining villages. Raw comparison logs and images are under `.build/intervention/`.
+
+The updated Sand geometry/controller suite passed 10/10 checks. A subsequent native 1600×900 run measured each route for 60 seconds after 10 seconds of warmup:
+
+| Sand route | Mean | p95 | p99 |
+| --- | ---: | ---: | ---: |
+| Sand avenue | 5.78 ms | 5.92 ms | 8.04 ms |
+| Kazekage approach | 5.33 ms | 6.16 ms | 7.35 ms |
+| Clay district | 5.76 ms | 6.29 ms | 17.08 ms |
+
+Each route completed eight reversals with no sustained movement block, no loss of ground contact and no frame above 50 ms. This passes the implemented three-route performance test, not long-term thermal acceptance or the visual gate. The harness now waits for initial Leaf startup before requesting a different first village.
+
+An additional Vulkan/Forward+ comparison retained the same scene and rendering settings. It measured 24.04 ms mean and 24.14 ms p95, slower than the Metal control, and emitted MoltenVK pipeline-cache write errors. The application retains Metal. Four measured Leaf strategies and two rendered Sand passes therefore leave the joint feasibility gate unapproved.
