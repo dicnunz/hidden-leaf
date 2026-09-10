@@ -20,5 +20,8 @@ Environment textures, vegetation and sky: [Poly Haven](https://polyhaven.com), C
 - [rock boulder dry](https://polyhaven.com/a/rock_boulder_dry)
 - [rough linen](https://polyhaven.com/a/rough_linen)
 - [tree small 02](https://polyhaven.com/a/tree_small_02)
+- [worn cracked plaster](https://polyhaven.com/a/worn_cracked_plaster)
+- [sand 01](https://polyhaven.com/a/sand_01)
+- [worn mossy plasterwall](https://polyhaven.com/a/worn_mossy_plasterwall)
 
 [CC0 1.0 license](https://creativecommons.org/publicdomain/zero/1.0/)

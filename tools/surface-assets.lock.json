@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "license": "CC0-1.0",
+  "files": [
+    {
+      "path": "assets/textures/worn_cracked_plaster/worn_cracked_plaster_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/worn_cracked_plaster/worn_cracked_plaster_diff_2k.jpg",
+      "sha256": "26b3771611b553d87b8411d5dd20c64aec79e295b87f4f5f1b94dcb04157988a",
+      "bytes": 3773492
+    },
+    {
+      "path": "assets/textures/worn_cracked_plaster/worn_cracked_plaster_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/worn_cracked_plaster/worn_cracked_plaster_nor_gl_2k.jpg",
+      "sha256": "879136c54b32fa9029a5393d49b848f8a6039501a699c847f754388d69ead70a",
+      "bytes": 3418770
+    },
+    {
+      "path": "assets/textures/worn_cracked_plaster/worn_cracked_plaster_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/worn_cracked_plaster/worn_cracked_plaster_rough_2k.jpg",
+      "sha256": "c1f0fb3b0b9ec37f5ff630b72ccb2fcdafbdbc9142a730cd98ec460da3caae2d",
+      "bytes": 1996497
+    },
+    {
+      "path": "assets/textures/sand_01/sand_01_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/sand_01/sand_01_diff_2k.jpg",
+      "sha256": "f311767ab68e132cb9de4160493a71ff17ec765c699d411facd5154d9a9a9c18",
+      "bytes": 1984816
+    },
+    {
+      "path": "assets/textures/sand_01/sand_01_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/sand_01/sand_01_nor_gl_2k.jpg",
+      "sha256": "b784b6a0526b79c81635bf423be9bc517ad36278ae5d68a4ff30f46eac56f0e3",
+      "bytes": 2503853
+    },
+    {
+      "path": "assets/textures/sand_01/sand_01_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/sand_01/sand_01_rough_2k.jpg",
+      "sha256": "60ec73993d245be5dab83f9debb67cab4303a0af9d4cec3f28868a58f939f8db",
+      "bytes": 757435
+    },
+    {
+      "path": "assets/textures/worn_mossy_plasterwall/worn_mossy_plasterwall_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/worn_mossy_plasterwall/worn_mossy_plasterwall_diff_2k.jpg",
+      "sha256": "b55a5ac7b045d64d7615c30cc47d8c2f630127877ddf686585722c178fab4b4c",
+      "bytes": 3987892
+    },
+    {
+      "path": "assets/textures/worn_mossy_plasterwall/worn_mossy_plasterwall_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/worn_mossy_plasterwall/worn_mossy_plasterwall_nor_gl_2k.jpg",
+      "sha256": "f7057359fa854bf8bda43d16c9d69a8da27f557f33270270b0b87043cb6e8775",
+      "bytes": 3874111
+    },
+    {
+      "path": "assets/textures/worn_mossy_plasterwall/worn_mossy_plasterwall_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/worn_mossy_plasterwall/worn_mossy_plasterwall_rough_2k.jpg",
+      "sha256": "ef28f4ea25072e0e756ac43b38b16d25f009c001e72427f1f26ee444829644bb",
+      "bytes": 2601005
+    }
+  ]
+}

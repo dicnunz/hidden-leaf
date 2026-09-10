@@ -43,5 +43,20 @@
     "asset": "rough_linen",
     "source": "https://polyhaven.com/a/rough_linen",
     "license": "CC0"
+  },
+  {
+    "asset": "worn_cracked_plaster",
+    "source": "https://polyhaven.com/a/worn_cracked_plaster",
+    "license": "CC0"
+  },
+  {
+    "asset": "sand_01",
+    "source": "https://polyhaven.com/a/sand_01",
+    "license": "CC0"
+  },
+  {
+    "asset": "worn_mossy_plasterwall",
+    "source": "https://polyhaven.com/a/worn_mossy_plasterwall",
+    "license": "CC0"
   }
 ]

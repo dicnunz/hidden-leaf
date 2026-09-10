@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "units": "metres",
+  "coordinate_system": "Authoring X/Y horizontal, Z up. Runtime X/-Z horizontal, Y up.",
+  "scale_policy": "Human dimensions establish a coherent working scale. Canon does not supply a survey. Unmeasured metric dimensions remain inferred, including dimensions of observed silhouettes.",
+  "villages": {
+    "leaf": {
+      "name": "Konohagakure",
+      "era": "Early Shippuden, before Pain's invasion",
+      "source_ids": ["official-two-saviors"],
+      "observed": ["Five Hokage portraits above the village", "Hokage office in front of the monument", "Dense low urban fabric, varied rounded and rectangular buildings, colored roofs", "Large entrance gates and enclosing wall, forest outside"],
+      "constrained": ["Office, monument and main approach maintain their repeated relative relationship"],
+      "inferred": ["Metric distances between incompletely documented districts", "Connective streets and private courtyards"],
+      "exclude": ["Sixth and seventh portrait", "Boruto-era railways and redevelopment", "Pain's crater mixed with intact streets"]
+    },
+    "sand": {
+      "name": "Sunagakure",
+      "era": "Early Shippuden, Kazekage Rescue period",
+      "source_ids": ["official-rescue-008", "suna-secondary-overview"],
+      "observed": ["Dense rounded towers with varied profiles", "High enclosing rock basin", "Warm earthen architecture with horizontal slit-window bands"],
+      "provisional_observed": ["Bulging Kazekage office with wind medallion and stepped crown", "Narrow entrance cleft through the enclosing escarpment"],
+      "constrained": ["Settlement occupies most of the interior basin", "Architecture must remain lower than its enclosing rim"],
+      "inferred": ["Street network and individual plot positions", "Construction joints, doors and functional street equipment", "Absolute basin diameter and office dimensions"],
+      "exclude": ["Freestanding sparse landmark park", "Uniform rectangular house grid", "Vegetation inconsistent with the arid basin"]
+    },
+    "mist": {
+      "name": "Kirigakure",
+      "era": "Shippuden, Mei's tenure around the Five Kage Summit",
+      "source_ids": ["official-departure-063", "kiri-secondary-era"],
+      "observed": ["Narrow towers with dense horizontal openings rise below enclosing steep mountains", "Low horizontal mist lies between forest and architecture", "Large paved foreground court"],
+      "provisional_observed": ["Broad cylindrical Mizukage complex with tiled roof and large arched entrance", "Tall masonry enclosure walls with archways", "Planted roof edges and smaller cylindrical dwellings"],
+      "constrained": ["Forest, steep surrounding relief and architecture overlap in depth", "Cylindrical monumental complex remains distinct from narrow residential towers"],
+      "inferred": ["Minor drainage and wet ground", "Unseen connections between public courts and residential lanes", "Metric scale beyond human-scale foreground paving"],
+      "exclude": ["Boruto modernization", "Invented Venice-like canal grid", "Blank flat ground concealed by opaque fog"]
+    },
+    "cloud": {
+      "name": "Kumogakure",
+      "era": "Shippuden, Fourth Raikage's tenure before the war",
+      "source_ids": ["kumo-secondary-overview"],
+      "provisional_observed": ["Mountain pinnacles penetrate occupied terrace rings", "Large blue office narrows toward its suspended lower end", "Office has horizontal galleries, vertical ribs, planted crown and an upper lookout", "Clouds cross the occupied elevation range", "Elevated routes and railings connect mountain construction"],
+      "constrained": ["Buildable terraces follow separate rock masses at different elevations", "Central office silhouette dominates the panorama without replacing the mountain skyline"],
+      "inferred": ["Exact bridge connections not visible in the source", "Stair routing and service access", "Absolute mountain elevation and office dimensions"],
+      "exclude": ["A flat city with a mountain backdrop", "Generic pagodas substituted for the ribbed blue office", "Boruto-era additions"]
+    },
+    "stone": {
+      "name": "Iwagakure",
+      "era": "Shippuden, Ohnoki's tenure around the Five Kage Summit",
+      "source_ids": ["official-kage-419-038", "official-departure-062"],
+      "observed": ["Occupied stone formations have steep exposed faces", "Arched galleries wrap rock at multiple heights", "Suspended bridges connect formations", "Vertical water runnels occur on some rock faces", "Sparse vegetation collects at protected rock feet"],
+      "constrained": ["Built galleries and exposed geology form a single structural mass", "Usable routes must negotiate substantial elevation changes"],
+      "inferred": ["Full settlement graph beyond the departure frame", "Metric sizes and unshown stair connections", "Service courts and private entrances"],
+      "exclude": ["Generic sandstone barrels on flat terrain", "Uniform mountain cones", "Unconnected decorative bridges"]
+    }
+  }
+}

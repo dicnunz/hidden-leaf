@@ -1,5 +1,7 @@
 # Hidden Leaf
 
+**Development branch:** the five-village expansion is unfinished and has not passed release acceptance. The default scene and linked release remain the existing Hidden Leaf experience. See [reconstruction status](evidence/review.md).
+
 An explorable Hidden Leaf Village scene built with Godot and Blender. Walk through the village, enter Ichiraku, or jump between six landmarks.
 
 [Download for Apple Silicon Mac](https://github.com/dicnunz/hidden-leaf/releases/tag/v0.3.0)
@@ -39,7 +41,7 @@ The geometry generator and Mac packager are included under [`tools/`](tools/). S
 
 ## Scope
 
-This is a small fan environment, developed with AI assistance using Naruto frames as visual references. The village layout and Hokage likenesses are approximate. Most buildings have exterior geometry only; Ichiraku has an accessible interior. There are no characters or gameplay objectives.
+The existing Leaf reconstruction uses the pre-Pain Shippuden era. Its village layout and Hokage likenesses are approximate. Most buildings have exterior geometry only; Ichiraku has an accessible interior. There are no characters or gameplay objectives.
 
 ![Inside Ichiraku](docs/interior.png)
 

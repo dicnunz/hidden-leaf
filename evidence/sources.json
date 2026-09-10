@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": "official-two-saviors",
+      "kind": "official_episode_retrospective",
+      "url": "https://naruto-official.com/en/news/01_1321",
+      "inspection": "Official chronological account inspected; Leaf geometry frames require individual comparison",
+      "supports_geometry": false,
+      "observations": ["Pain destroys the settlement before the Five Kage Summit", "The intact early-Shippuden state must be kept separate from reconstruction"]
+    },
+    {
+      "id": "official-departure-062",
+      "kind": "anime",
+      "url": "https://naruto-official.com/en/news/01_1321",
+      "image_url": "https://cmsapi-frontend.naruto-official.com/site/api/naruto/Image/get?path=/naruto/jp/news/2022/11/09/YJDdhFfKRs4TzNcm/062.jpg",
+      "locator": "Five Kage departure section, Ohnoki",
+      "inspection": "1280x720 original official frame inspected",
+      "supports_geometry": true,
+      "observations": ["Arched galleries wrap steep rock faces", "Suspension bridge crosses the upper background", "Vertical water runnels and vegetation occur on exposed rock"],
+      "limits": "Characters obscure foreground; incomplete layout and no survey scale"
+    },
+    {
+      "id": "official-departure-063",
+      "kind": "anime",
+      "url": "https://naruto-official.com/en/news/01_1321",
+      "image_url": "https://cmsapi-frontend.naruto-official.com/site/api/naruto/Image/get?path=/naruto/jp/news/2022/11/09/7ZMUpwtFwAwZwcCL/063.jpg",
+      "locator": "Five Kage departure section, Mei",
+      "inspection": "1280x720 original official frame inspected",
+      "supports_geometry": true,
+      "observations": ["Narrow residential towers below steep enclosing mountain peaks", "Low horizontal mist and dense woodland", "Large rectangular paving slabs in the foreground court"],
+      "limits": "Does not show the main office or locate the court within a complete map"
+    },
+    {
+      "id": "kumo-secondary-overview",
+      "kind": "anime_reproduction",
+      "url": "https://naruto.fandom.com/wiki/Kumogakure",
+      "image_url": "https://static.wikia.nocookie.net/naruto/images/5/5a/Kumogakure.png/revision/latest?cb=20160129210622",
+      "inspection": "Full panorama inspected in browser; original episode locator unresolved",
+      "supports_geometry": false,
+      "observations": ["Candidate reference: large blue inverted tapering office around a central mountain", "Candidate reference: horizontal gallery rings, vertical ribs and planted crown", "Candidate reference: occupied terrace rings on separate pinnacles, bridges and clouds at several heights"],
+      "limits": "Secondary reproduction has not yet been matched to a primary release; constraints remain provisional"
+    },
+    {
+      "id": "manga-247",
+      "kind": "manga",
+      "url": "https://www.viz.com/shonenjump/naruto-chapter-247/chapter/4110",
+      "locator": "Naruto volume 28, chapter 247",
+      "inspection": "Index and access boundary only; panels not inspected",
+      "supports_geometry": false
+    },
+    {
+      "id": "official-rescue-008",
+      "kind": "anime",
+      "url": "https://naruto-official.com/en/news/01_1308",
+      "locator": "Kazekage Rescue retrospective, image 008.jpg; Gaara's sand above the settlement",
+      "image_url": "https://cmsapi-frontend.naruto-official.com/site/api/naruto/Image/get?path=/naruto/jp/news/2022/10/25/Ka6Z4fn4dkzPD5uh/008.jpg",
+      "inspection": "720x540 image inspected",
+      "supports_geometry": true,
+      "observations": ["Dense rounded towers occupy the basin", "A high cliff rim encloses the settlement", "Towers vary in height and profile; slit windows follow horizontal bands"],
+      "limits": "Night lighting; battle obscures much of the skyline; no absolute metric anchor"
+    },
+    {
+      "id": "official-kage-419-038",
+      "kind": "anime",
+      "url": "https://naruto-official.com/en/anime/naruto2/list/01_643",
+      "locator": "Enter the Five Kage; official cumulative episode 419, Shippuden episode 199; gallery Image 3, C038.jpg",
+      "image_url": "https://cmsapi-frontend.naruto-official.com/site/api/naruto/Image/get?path=/naruto/import/images/naruto02/401%EF%BD%9E500/419/C038.jpg",
+      "inspection": "1280x720 image inspected",
+      "supports_geometry": true,
+      "observations": ["Iwa has steep exposed rock faces", "Arched galleries wrap around rock at several heights", "Architecture is integrated with vertical geology"],
+      "limits": "Character foreground occludes most of the settlement; does not establish full layout"
+    },
+    {
+      "id": "suna-secondary-overview",
+      "kind": "secondary_locator",
+      "url": "https://naruto.fandom.com/wiki/Sunagakure",
+      "locator": "Settlement overview and Kazekage office thumbnails",
+      "inspection": "320px overview and 180px office image inspected; original episode not yet resolved",
+      "supports_geometry": false,
+      "observations": ["Candidate reference: irregular basin enclosure with a narrow cleft", "Candidate reference: large rounded office, wind medallion, stepped crown and flanking banded towers"]
+    },
+    {
+      "id": "kiri-secondary-era",
+      "kind": "secondary_locator",
+      "url": "https://naruto.fandom.com/wiki/Kirigakure",
+      "locator": "Reinvention section, Kiri at the time of the Fourth Shinobi World War",
+      "inspection": "Caption and thumbnail inspected; original episode not yet resolved",
+      "supports_geometry": false,
+      "observations": ["Candidate reference: cylindrical stepped buildings with planted roof edges and mist", "The same page includes later modernization, which must be excluded"]
+    }
+  ],
+  "conflicts": [
+    {"id": "kiri-modernization", "issue": "Secondary page includes Boruto redevelopment alongside Shippuden imagery", "resolution": "Use only the earlier-era source after original provenance is established"},
+    {"id": "leaf-pain", "issue": "Intact pre-Pain Leaf and post-Pain reconstruction are incompatible states", "resolution": "Retain pre-Pain Shippuden, five Hokage portraits; do not introduce postwar towers or a sixth portrait"},
+    {"id": "episode-numbering", "issue": "Official website numbers Shippuden episodes cumulatively after the original 220 episodes", "resolution": "Record both cumulative and Shippuden-relative numbering"}
+  ]
+}
