@@ -182,7 +182,7 @@ func _run() -> void:
 	_check(applied_quality[0] == 2 and is_equal_approx(player.sensitivity, .0022 * 1.45), "Saved quality applies after setup and restores player sensitivity")
 	var sensitivity_widget: HSlider = hud.find_child("LookSensitivity", true, false)
 	var quality_widget: OptionButton = hud.find_child("GraphicsQuality", true, false)
-	var fullscreen_widget: CheckBox = hud.find_child("Fullscreen", true, false)
+	var fullscreen_widget: CheckButton = hud.find_child("Fullscreen", true, false)
 	_check(is_equal_approx(sensitivity_widget.value, 1.45) and quality_widget.selected == 2 and not fullscreen_widget.button_pressed, "Startup widgets match all saved preferences")
 	# Drive the actual widgets, then inspect the on-disk config they saved.
 	sensitivity_widget.value = 1.65
@@ -202,7 +202,7 @@ func _run() -> void:
 	restored.quality_changed.connect(func(index: int): restored_quality[0] = index)
 	await _frames(2)
 	var restored_slider: HSlider = restored.find_child("LookSensitivity", true, false)
-	var restored_fullscreen: CheckBox = restored.find_child("Fullscreen", true, false)
+	var restored_fullscreen: CheckButton = restored.find_child("Fullscreen", true, false)
 	_check(restored_quality[0] == 1 and is_equal_approx(restored_slider.value, 1.65) and restored_fullscreen.button_pressed and restored.paused, "A fresh HUD restores preferences and preserves deliberate entry")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(preference_path))
 	await _test_camera_interpolation()

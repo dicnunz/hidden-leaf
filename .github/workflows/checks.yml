@@ -40,7 +40,7 @@ jobs:
       - name: Run controller checks
         run: |
           set -o pipefail
-          "$RUNNER_TEMP/godot/Godot_v4.7.1-stable_linux.x86_64" --headless --path . --script res://qa/test_player.gd -- --qa | tee "$RUNNER_TEMP/controller.log"
+          timeout 120s "$RUNNER_TEMP/godot/Godot_v4.7.1-stable_linux.x86_64" --headless --path . --script res://qa/test_player.gd --fixed-fps 60 -- --qa 2>&1 | tee "$RUNNER_TEMP/controller.log"
           python - <<'PYCODE'
           import os, pathlib, re
           log = (pathlib.Path(os.environ['RUNNER_TEMP'])/'controller.log').read_text()
