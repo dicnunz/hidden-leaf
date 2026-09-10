@@ -28,7 +28,7 @@ This walks three routes and records frame times and distance traveled. Performan
 python3 tools/package_macos.py --version 0.1.0 --smoke-test
 ```
 
-The packager finds `godot` on PATH, then the standard macOS application location. Set `GODOT` or pass `--godot` to choose another executable. It creates `.build/dist/Hidden Leaf Explorer.app`, bundles the engine and notices, ad hoc signs it and checks launch from an empty working directory. The build is for local Apple Silicon use and is not notarized.
+The packager finds `godot` on PATH, then the standard macOS application location. Set `GODOT` or pass `--godot` to choose another executable. It creates `.build/dist/Hidden Leaf.app`, bundles the engine and notices, ad hoc signs it and checks launch from an empty working directory. The build is for local Apple Silicon use and is not notarized.
 
 ## Geometry authoring
 
